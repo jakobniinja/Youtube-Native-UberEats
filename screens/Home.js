@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, SafeAreaView, ScrollView } from 'react-native'
-import Categories from '../components/Categories'
-import HeaderTabs from '../components/HeaderTabs'
-import ResturantItems from '../components/ResturantItem'
-import SearchBar from '../components/SearchBar'
-import config from "../config"
+import React, { useEffect, useState } from "react";
+import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import BottomsTabs from "../components/BottomsTabs";
+import Categories from "../components/Categories";
+import HeaderTabs from "../components/HeaderTabs";
+import ResturantItems from "../components/ResturantItem";
+import {Divider} from "react-native-elements"
+import SearchBar from "../components/SearchBar";
+import config from "../config";
 
 const localRestaurants = [
   {
@@ -37,33 +39,44 @@ const localRestaurants = [
 ];
 
 export default function Home() {
-  const [resturantData, setResturantData] = useState(localRestaurants)
-    const [city, setCity] = useState("högdalen");
-     const getResturantFromYelp = () => {
-      const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
-    const apiOptions =  {
-      headers:{
+  const [resturantData, setResturantData] = useState(localRestaurants);
+  const [city, setCity] = useState("bandhagen");
+  const [activeTab, setActiveTab] = useState("Delivery");
+
+  const getResturantFromYelp = () => {
+    const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
+    const apiOptions = {
+      headers: {
         Authorization: `Bearer ${config.REACT_APP_YELP_KEY}`,
       },
-      mode:"cors"
-      };
+      mode: "cors",
+    };
 
-return fetch(yelpUrl, apiOptions).then(res => res.json()).then(data => setResturantData(data.businesses)).catch(err => console.log(err))
-  }
-    useEffect(() => {
-      getResturantFromYelp();
-    }, [])
+    return fetch(yelpUrl, apiOptions)
+      .then((res) => res.json())
+      .then((json) =>
+        setResturantData(
+          json.businesses
+        )
+      )
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getResturantFromYelp();
+  }, [city,activeTab]);
 
-    return (
-        <SafeAreaView  style={{backgroundColor: "#eee", flex:1}} >
-            <View  style={{backgroundColor:"white", padding: 15}} >
-            <HeaderTabs/>
-            <SearchBar  />
-            <ScrollView showsVerticalScrollIndicator={false}  > 
-            <Categories />
-            <ResturantItems resturantData={resturantData} />
-            </ScrollView>
-            </View>
-        </SafeAreaView>
-    )
+  return (
+    <SafeAreaView style={{ backgroundColor: "#eee", flex: 1 }}>
+      <View style={{ backgroundColor: "white", padding: 15 }}>
+        <HeaderTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <SearchBar cityHandler={setCity} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Categories />
+          <ResturantItems resturantData={resturantData} />
+        </ScrollView>
+        <Divider witdth={1} />
+        <BottomsTabs/>
+      </View>
+    </SafeAreaView>
+  );
 }
