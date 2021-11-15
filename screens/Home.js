@@ -4,7 +4,7 @@ import Categories from '../components/Categories'
 import HeaderTabs from '../components/HeaderTabs'
 import ResturantItems from '../components/ResturantItem'
 import SearchBar from '../components/SearchBar'
-import axios from "axios"
+import config from "../config"
 
 const localRestaurants = [
   {
@@ -36,7 +36,6 @@ const localRestaurants = [
   },
 ];
 
-const YELP_API_KEY="OCV5gU1sHRJIU-RREvj9WhfMbC4_HX33qg8JovyMtA0-enAWnvvf1Rq4MwaW807fphVIoAnHh_2GOAd22uwMA7L4Do64LXM-ik6W04Gt87lifkumbyVIOJcsBtaPYXYx"
 export default function Home() {
   const [resturantData, setResturantData] = useState(localRestaurants)
     const [city, setCity] = useState("högdalen");
@@ -44,7 +43,7 @@ export default function Home() {
       const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
     const apiOptions =  {
       headers:{
-        Authorization: `Bearer ${YELP_API_KEY}`,
+        Authorization: `Bearer ${config.REACT_APP_YELP_KEY}`,
       },
       mode:"cors"
       };
