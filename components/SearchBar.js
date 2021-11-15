@@ -3,11 +3,21 @@ import { View, Text } from 'react-native'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import AntDesign from "react-native-vector-icons/AntDesign"
+import config from "../config"
 
 export default function SearchBar() {
+    
     return (
         <View style={{marginTop:15, flexDirection:"row"}} >
             <GooglePlacesAutocomplete
+            query={{key: config.REACT_APP_GOOGLE_KEY }}
+                  requestUrl={{
+        useOnPlatform: 'all', 
+        url:
+          'https://maps.googleapis.com/maps/api', // or any proxy server that hits https://maps.googleapis.com/maps/api
+        
+        mode:"cors"
+      }}
             placeholder="Search"
            styles={{
                textInput: {
