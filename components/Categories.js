@@ -5,7 +5,7 @@ export default function Categories() {
   const items = [
   {
     image: require("../assets/images/shopping-bag.png"),
-    text: "Pick-up",
+    text: "Pick-up",    
   },
   {
     image: require("../assets/images/soft-drink.png"),

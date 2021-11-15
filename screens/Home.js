@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, SafeAreaView, ScrollView } from 'react-native'
 import Categories from '../components/Categories'
 import HeaderTabs from '../components/HeaderTabs'
 import ResturantItems from '../components/ResturantItem'
 import SearchBar from '../components/SearchBar'
+import axios from "axios"
 
 const localRestaurants = [
   {
@@ -35,9 +36,25 @@ const localRestaurants = [
   },
 ];
 
+const YELP_API_KEY="OCV5gU1sHRJIU-RREvj9WhfMbC4_HX33qg8JovyMtA0-enAWnvvf1Rq4MwaW807fphVIoAnHh_2GOAd22uwMA7L4Do64LXM-ik6W04Gt87lifkumbyVIOJcsBtaPYXYx"
 export default function Home() {
-    const [resturantData, setResturantData] = useState(localRestaurants)
-    
+  const [resturantData, setResturantData] = useState(localRestaurants)
+    const [city, setCity] = useState("högdalen");
+     const getResturantFromYelp = () => {
+      const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
+    const apiOptions =  {
+      headers:{
+        Authorization: `Bearer ${YELP_API_KEY}`,
+      },
+      mode:"cors"
+      };
+
+return fetch(yelpUrl, apiOptions).then(res => res.json()).then(data => setResturantData(data.businesses)).catch(err => console.log(err))
+  }
+    useEffect(() => {
+      getResturantFromYelp();
+    }, [])
+
     return (
         <SafeAreaView  style={{backgroundColor: "#eee", flex:1}} >
             <View  style={{backgroundColor:"white", padding: 15}} >
@@ -45,7 +62,7 @@ export default function Home() {
             <SearchBar  />
             <ScrollView showsVerticalScrollIndicator={false}  > 
             <Categories />
-            <ResturantItems   resturantData={resturantData} />
+            <ResturantItems resturantData={resturantData} />
             </ScrollView>
             </View>
         </SafeAreaView>
