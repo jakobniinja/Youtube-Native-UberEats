@@ -22,5 +22,5 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
-  "private": true
+  "private": false
 }

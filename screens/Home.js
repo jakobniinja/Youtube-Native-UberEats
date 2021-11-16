@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, SafeAreaView, ScrollView } from "react-native";
-import BottomsTabs from "../components/BottomsTabs";
-import Categories from "../components/Categories";
-import HeaderTabs from "../components/HeaderTabs";
-import ResturantItems from "../components/ResturantItem";
+import BottomsTabs from "../components/home/BottomsTabs";
+import Categories from "../components/home/Categories";
+import HeaderTabs from "../components/home/HeaderTabs";
+import ResturantItems from "../components/home/ResturantItem";
 import {Divider} from "react-native-elements"
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/home/SearchBar";
 import config from "../config";
 
 const localRestaurants = [
