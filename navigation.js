@@ -10,7 +10,6 @@ export default function RootNavigation() {
     const screenOptions ={
        headersShown: false 
     }
-    
     return (
         <NavigationContainer>
             <Stack.Navigator  initialRouteName="Home" screenOptions={screenOptions}>

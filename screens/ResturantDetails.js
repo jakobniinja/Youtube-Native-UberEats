@@ -3,14 +3,16 @@ import { View, Text } from "react-native";
 import { Divider } from "react-native-elements/dist/divider/Divider";
 import About from "../components/resturantDetail/About";
 import MenuItems from "../components/resturantDetail/MenuItems";
+import ViewCart from "../components/resturantDetail/ViewCart";
 
-export default function ResturantDetails( {route}) {
+export default function ResturantDetails( {route, navigation }) {
   return (
     <View>
       <About  route={route}>
       </About >
         <Divider width={1.7} style={{ marginVertical: 20 }}/>
         <MenuItems  /> 
+        <ViewCart  navigation={navigation} resturantName={route.params.name}  />
     </View>
   );
 }
