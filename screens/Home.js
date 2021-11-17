@@ -38,10 +38,11 @@ const localRestaurants = [
   },
 ];
 
-export default function Home() {
+export default function Home({navigation}) {
   const [resturantData, setResturantData] = useState(localRestaurants);
   const [city, setCity] = useState("bandhagen");
   const [activeTab, setActiveTab] = useState("Delivery");
+
 
   const getResturantFromYelp = () => {
     const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
@@ -72,7 +73,7 @@ export default function Home() {
         <SearchBar cityHandler={setCity} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <Categories />
-          <ResturantItems resturantData={resturantData} />
+          <ResturantItems resturantData={resturantData}  navigation={navigation} />
         </ScrollView>
         <Divider witdth={1} />
         <BottomsTabs/>

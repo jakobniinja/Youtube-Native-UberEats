@@ -46,7 +46,7 @@ export default function MenuItems() {
         <FoodInfo food={food} />
         <FoodImage  food={food} />
       </View>
-      <Divider  width={1.2}  orientation="vertical" />
+      <Divider  width={1.2}  orientation="vertical"  style={{marginHorizontal: 20}} />
     </View>
 
       ))}

@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, Image} from 'react-native'
 
-export default function About() {
     const yelpResturantInfo  = {
         name: "Burger Mansion",
         image: "https://s3-eu-west-1.amazonaws.com/qopla/5f6b3614060e320a439e4765/shop/Image-1.jpeg",
@@ -10,7 +9,9 @@ export default function About() {
         rating: 4.5,
         categories: [{title: "Burgers"}, ]
     }
-    const {name, image, price,reviews, rating, categories} = yelpResturantInfo;
+export default function About(props) {
+
+    const {name, image, price,reviews, rating, categories} = props.route.params;
     const formatedCategories = categories.map((cat) => cat.title).join(" • ")
     const description  = `${formatedCategories} ${price ? ' • ' + price : "" }  • 🎟️ • ${rating} ⭐ (${reviews}+) `
     return (

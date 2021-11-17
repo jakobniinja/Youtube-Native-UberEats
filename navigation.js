@@ -5,21 +5,18 @@ import { View, Text } from 'react-native'
 import Home from './screens/Home';
 import ResturantDetails from "./screens/ResturantDetails"
 
-export default function navigation() {
+export default function RootNavigation() {
     const Stack = createStackNavigator();
-    
     const screenOptions ={
        headersShown: false 
     }
     
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Navigator  initialRouteName="Home" screenOptions={screenOptions}>
                 <Stack.Screen name="Home" component={Home}/>
                 <Stack.Screen name="ResturantDetails" component={ResturantDetails}/>
-                <Stack.Screen name="Home" component={Home}/>
             </Stack.Navigator>
-
         </NavigationContainer>
     )
 }
