@@ -4,7 +4,7 @@
 
  <h2 align = 'center'>About page</h2>
 <p align="center">
-<img src="./assets/about-page.png" alt="React"  />
+<img src="./assets/about.png" alt="React"  />
 
 </p>
 
