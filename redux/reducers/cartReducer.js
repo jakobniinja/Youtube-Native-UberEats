@@ -19,10 +19,10 @@ let cartReducer = (state = defaultstate, action) => {
         newState.selectedItems = {
           items: [
             ...newState.selectedItems.items.filter(
-              (item) => item.title != action.payload.title
+              (item) => item.title !== action.payload.title
             ),
           ],
-          resturantName: action.payload.resturantName,
+          restaurantName: action.payload.restaurantName,
         };
       }
     }

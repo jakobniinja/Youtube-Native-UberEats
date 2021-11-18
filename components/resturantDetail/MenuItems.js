@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-export default function MenuItems({resturantName}) {
+export default function MenuItems({resturantName,}) {
   const foods = [
     {
       food: "Burger",
@@ -47,7 +47,7 @@ export default function MenuItems({resturantName}) {
       {foods.map((food, index) => (
     <View key={index} >
       <View style={styles.menuItemStyles}>
-        <BouncyCheckBox iconStyle={{borderColor: "black" }} fillColor="#8a2be2"  onPress={(checkboxValue) =>  selectItem(food, checkboxValue)  }  />
+          <BouncyCheckBox iconStyle={{borderColor: "black" }} fillColor="#8a2be2"  onPress={(checkboxValue) =>  selectItem(food, checkboxValue)  }  />
         <FoodInfo food={food} />
         <FoodImage  food={food} />
       </View>
