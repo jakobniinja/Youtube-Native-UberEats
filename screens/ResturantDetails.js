@@ -5,7 +5,10 @@ import About from "../components/resturantDetail/About";
 import MenuItems from "../components/resturantDetail/MenuItems";
 import ViewCart from "../components/resturantDetail/ViewCart";
 
+
+
 export default function ResturantDetails( {route, navigation }) {
+
   return (
     <View>
       <About  route={route}>

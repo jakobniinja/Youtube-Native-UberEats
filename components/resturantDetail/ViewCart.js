@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function ViewCart({  navigation}) {
-    const { items,  resturantName} = useSelector(
+    const { items} = useSelector(
     (state) => state.cartReducer.selectedItems
   );
   
