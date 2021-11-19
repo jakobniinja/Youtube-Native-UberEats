@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Divider } from "react-native-elements";
 import BouncyCheckBox from "react-native-bouncy-checkbox";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, Modal } from "react-redux";
 const styles = StyleSheet.create({
   menuItemStyles: {
     flexDirection: "row",
@@ -52,6 +52,8 @@ export default function MenuItems({ resturantName }) {
     },
   ];
   const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false)
+
   const selectItem = (item, checkboxValue) =>
     dispatch({
       type: "ADD_TO_CART",
@@ -72,6 +74,8 @@ export default function MenuItems({ resturantName }) {
       )
     );
 
+    
+
   return (
     <>
       {foods.map((food, index) => (
@@ -80,8 +84,8 @@ export default function MenuItems({ resturantName }) {
             <BouncyCheckBox
               iconStyle={{ borderColor: "black" }}
               fillColor="#8a2be2"
-              onPress={(checkboxValue) => selectItem(food, checkboxValue)}
               isChecked={isFoodInCart(food, cartItems)}
+              onPress={(checkboxValue) => selectItem(food, checkboxValue)}
             />
             <FoodInfo food={food} />
             <FoodImage food={food} />
