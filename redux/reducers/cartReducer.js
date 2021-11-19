@@ -1,30 +1,32 @@
-let defaultstate = {
+let defaultState = {
   selectedItems: { items: [], resturantName: "" },
 };
 
-let cartReducer = (state = defaultstate, action) => {
+let cartReducer = (state = defaultState, action) => {
   switch (action.type) {
     case "ADD_TO_CART": {
       let newState = { ...state };
+
       if (action.payload.checkboxValue) {
-        console.log("ADD_TO_CART");
+        console.log("ADD TO CART");
+
         newState.selectedItems = {
           items: [...newState.selectedItems.items, action.payload],
           resturantName: action.payload.resturantName,
         };
-        console.log(newState);
-        return newState;
       } else {
-        console.log("REMOVE_FROM_CART");
+        console.log("REMOVE FROM CART");
         newState.selectedItems = {
           items: [
             ...newState.selectedItems.items.filter(
               (item) => item.title !== action.payload.title
             ),
           ],
-          restaurantName: action.payload.restaurantName,
+          resturantName: action.payload.resturantName,
         };
       }
+      console.log(newState, "👉");
+      return newState;
     }
 
     default:

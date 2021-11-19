@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Divider } from "react-native-elements";
-import BouncyCheckBox from "react-native-bouncy-checkbox"
-import {useDispatch} from "react-redux"
+import BouncyCheckBox from "react-native-bouncy-checkbox";
+import { useDispatch, useSelector } from "react-redux";
 const styles = StyleSheet.create({
   menuItemStyles: {
     flexDirection: "row",
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-export default function MenuItems({resturantName,}) {
+export default function MenuItems({ resturantName }) {
   const foods = [
     {
       food: "Burger",
@@ -38,23 +38,46 @@ export default function MenuItems({resturantName,}) {
         "https://lh3.googleusercontent.com/p/AF1QipOBhz0sG7TcAlsl7HeWWGw_6Z5nkMRJZ84CQHtv=w768-h768-n-o-v1",
     },
   ];
-   const dispatch = useDispatch();
-   const selectItem = (item, checkboxValue) => dispatch({
-     type: "ADD_TO_CART", payload:{...item, resturantName: resturantName, checkboxValue:  checkboxValue,
-   } })
+  const dispatch = useDispatch();
+  const selectItem = (item, checkboxValue) =>
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        ...item,
+        resturantName: resturantName,
+        checkboxValue: checkboxValue,
+      },
+    });
+    const cartItems = useSelector(state => state.cartReducer.selectedItems.items);
+    const isFoodInCart = (food, cartItems) => 
+    (
+      Boolean(cartItems.find((item) => item.tittle === food.tittle))
+    )
+    
   return (
-      <>
+    <>
       {foods.map((food, index) => (
-    <View key={index} >
-      <View style={styles.menuItemStyles}>
-          <BouncyCheckBox iconStyle={{borderColor: "black" }} fillColor="#8a2be2"  onPress={(checkboxValue) =>  selectItem(food, checkboxValue)  }  />
-        <FoodInfo food={food} />
-        <FoodImage  food={food} />
-      </View>
-      <Divider  width={1.2}  orientation="vertical"  style={{marginHorizontal: 20}} />
-    </View>
+        <View key={index}>
+          <View style={styles.menuItemStyles}>
+            <BouncyCheckBox
+              iconStyle={{ borderColor: "black" }}
+              fillColor="#8a2be2"
+              onPress={(checkboxValue) => {
+                selectItem (food, checkboxValue)
+                console.log(checkboxValue)
+              }}
+              isChecked={isFoodInCart(food, cartItems)}
+            />
+            <FoodInfo food={food} />
+            <FoodImage food={food} />
+          </View>
+          <Divider
+            width={1.2}
+            orientation="vertical"
+            style={{ marginHorizontal: 20 }}
+          />
+        </View>
       ))}
-
     </>
   );
 }
