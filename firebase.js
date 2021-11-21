@@ -3,10 +3,11 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import firebase from "firebase"
+import config from "./config"
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC7YvCIwTNhf8621Rjo5u08TCW3uykdsiw",
+  apiKey: config.REACT_APP_FIREBASE_KEY,
   authDomain: "native-uber-eats-clone-cp.firebaseapp.com",
   projectId: "native-uber-eats-clone-cp",
   storageBucket: "native-uber-eats-clone-cp.appspot.com",
