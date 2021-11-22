@@ -1,10 +1,32 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+  Image,
+} from "react-native";
+
 import { useSelector } from "react-redux";
 import OrderItem from "./OrderItem";
-import  firebase from "../../firebase"
-export  default function ViewCart({ navigation }) {
+import firebase from "../../firebase";
+import lottie from "lottie-web";
+
+export default function ViewCart({ navigation }) {
+  const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const container6= useRef(null);
+  useEffect(() => {
+    lottie.loadAnimation({
+      container: container6.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      animationData: require("../../assets/animations/paperplane.json"),
+    });
+  }, []);
 
   const { items, resturantName } = useSelector(
     (state) => state.cartReducer.selectedItems
@@ -20,17 +42,22 @@ export  default function ViewCart({ navigation }) {
   });
 
   const addOrderToFirbase = () => {
+    setLoading(true);
     const db = firebase.firestore();
-    db.collection("orders").add({
-      items: items,
-      resturantName: resturantName,
-      total: totalUSD,
-      createdAt : firebase.firestore.FieldValue.serverTimestamp(),
-    })
-    setModalVisible(false);
-    navigation.navigate("OrderCompleted")
-  }
-  
+    db.collection("orders")
+      .add({
+        items: items,
+        resturantName: resturantName,
+        total: totalUSD,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        setTimeout(() => {
+          // setLoading(false)
+          navigation.navigate("OrderCompleted");
+        }, 2500);
+      });
+  };
 
   const styles = StyleSheet.create({
     modalContainer: {
@@ -78,23 +105,36 @@ export  default function ViewCart({ navigation }) {
               <Text style={styles.subtotalText}> Subtotal </Text>
               <Text> {totalUSD} </Text>
             </View>
-            <View style={{ flexDirection: "row", justifyContent:"center" }} >
-              <TouchableOpacity style={{marginTop: 20, backgroundColor:"#8a2be2", alignItems:"center",
-              padding: 17,
-              borderRadius: 30,
-              width: 300,
-              position: "relative"
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <TouchableOpacity
+                style={{
+                  marginTop: 20,
+                  backgroundColor: "#8a2be2",
+                  alignItems: "center",
+                  padding: 17,
+                  borderRadius: 30,
+                  width: 300,
+                  position: "relative",
+                }}
+                onPress={() => {
 
-            }} 
-            onPress={() => 
-            addOrderToFirbase()
-            }
-            >
-              <Text  style={{ color:"white", fontSize: 12}} >Process </Text>
-             <Text style={{ position: "absolute",  right: 20, color: "white",
-             fontSize: 9,
-             top: 17
-            }} > {total ? totalUSD : ""} </Text>
+                  addOrderToFirbase();
+                  setModalVisible(false);
+                }}
+              >
+                <Text style={{ color: "white", fontSize: 12 }}>Process </Text>
+                <Text
+                  style={{
+                    position: "absolute",
+                    right: 20,
+                    color: "white",
+                    fontSize: 9,
+                    top: 17,
+                  }}
+                >
+                  {" "}
+                  {total ? totalUSD : ""}{" "}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -159,7 +199,29 @@ export  default function ViewCart({ navigation }) {
       ) : (
         <></>
       )}
-      ;
+      {loading ? (
+        <View
+          style={{
+            backgroundColor: "black",
+            position: "absolute",
+            justifyContent: "center",
+            alignItems: "center",
+            opacity: 0.6,
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <Image
+            ref={container6}
+            style={{
+              height: "70%",
+              alignSelf: "center"
+            }}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

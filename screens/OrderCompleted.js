@@ -1,31 +1,40 @@
-import React, { useEffect, useRef } from "react";
-import { View, Text, SafeAreaView, Image } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, SafeAreaView, Image, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import lottie from "lottie-web";
+import firebase from "../firebase";
+import MenuItems from "../components/resturantDetail/MenuItems";
 
 export default function OrderCompleted() {
+  const [lastOrder, setlastOrder] = useState({
+    items: [
+      {
+        food: "Lasagna",
+        desc: "With butter lettuce, tomato and sauce bechamel",
+        price: "$13.50",
+        image:
+          "https://www.modernhoney.com/wp-content/uploads/2019/08/Classic-Lasagna-14-scaled.jpg",
+      },
+    ],
+  });
   const container = useRef(null);
   const container2 = useRef(null);
   useEffect(() => {
-    
     lottie.loadAnimation({
       container: container.current,
       renderer: "svg",
       loop: false,
       autoplay: true,
-      animationData: require("../assets/animations/purple-tick.json")
+      animationData: require("../assets/animations/purple-tick.json"),
     });
-    
+
     lottie.loadAnimation({
       container: container2.current,
       renderer: "svg",
       loop: false,
       autoplay: true,
-      animationData: require("../assets/animations/cooking.json")
+      animationData: require("../assets/animations/cooking.json"),
     });
-
-
-
   }, []);
 
   const { items, resturantName } = useSelector(
@@ -40,15 +49,46 @@ export default function OrderCompleted() {
     style: "currency",
     currency: "USD",
   });
+  useEffect(() => {
+    const db = firebase.firestore();
+    const unsubcribe = db
+      .collection("orders")
+      .orderBy("createdAt", "desc")
+      .limit(1)
+      .onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          setlastOrder(doc.data());
+        });
+      });
+    return () => unsubcribe();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <Image ref={container} style={{width:100, alignSelf: "center"}} ></Image>
+      <View
+        style={{
+          margin: 15,
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <Image
+          ref={container}
+          style={{ width: 100, alignSelf: "center" }}
+        ></Image>
 
-      <Text>
-        your order at {resturantName}, has been placed for {totalUSD}
-      </Text>
-      <Image ref={container2} style={{width:"80%", alignSelf: "center"}} ></Image>
-      {/* cooking animation */}
+        <ScrollView>
+          <MenuItems foods={lastOrder.items} hideCheckbox={true}></MenuItems>
+          <Text style={{ fontSize: 20, fontWeight: "bold", padding: 12 }}>
+            {resturantName}, total {totalUSD}
+          </Text>
+          <Image
+            ref={container2}
+            style={{ width: "80%", alignSelf: "center" }}
+          ></Image>
+          {/* cooking animation */}
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
