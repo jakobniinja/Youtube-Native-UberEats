@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-
-export default function ViewCart({ navigation }) {
+import OrderItem from "./OrderItem";
+import  firebase from "../../firebase"
+export  default function ViewCart({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { items } = useSelector((state) => state.cartReducer.selectedItems);
+  const { items, resturantName } = useSelector(
+    (state) => state.cartReducer.selectedItems
+  );
 
   const total = items
     .map((item) => Number(item.price.replace("$", "")))
@@ -16,32 +19,87 @@ export default function ViewCart({ navigation }) {
     currency: "USD",
   });
 
+  const addOrderToFirbase = () => {
+    const db = firebase.firestore();
+    db.collection("orders").add({
+      items: items,
+      resturantName: resturantName,
+      total: totalUSD,
+      createdAt : firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    setModalVisible(false);
+    navigation.navigate("OrderCompleted")
+  }
+  
+
+  const styles = StyleSheet.create({
+    modalContainer: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: "rgba(0,0,0,0.3)",
+    },
+    modalCheckoutContainer: {
+      backgroundColor: "white",
+      padding: 16,
+      height: 500,
+      width: "100%",
+    },
+    resturantName: {
+      textAlign: "center",
+      fontWeight: "600",
+      fonsize: 18,
+      marginBottom: 10,
+    },
+    subtotalContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 15,
+    },
+    subtotalText: {
+      textAlign: "left",
+      fontWeight: "600",
+      fonsize: 15,
+      marginBottom: 10,
+    },
+  });
+
   console.log(totalUSD);
 
   const checkoutModalContent = () => {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 40,
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "#8a2be2",
-            padding: 10,
-            borderRadius: 30,
-            width: 150,
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-            <Text style={{ color: "white", backgroundColor:"#8a2be2"}}>Checkout 🥐 </Text>
-          </TouchableOpacity>
+      <>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalCheckoutContainer}>
+            <Text style={styles.resturantName}> {resturantName} </Text>
+            {items.map((item, index) => (
+              <OrderItem key={index} item={item}></OrderItem>
+            ))}
+            <View style={styles.subtotalContainer}>
+              <Text style={styles.subtotalText}> Subtotal </Text>
+              <Text> {totalUSD} </Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent:"center" }} >
+              <TouchableOpacity style={{marginTop: 20, backgroundColor:"#8a2be2", alignItems:"center",
+              padding: 17,
+              borderRadius: 30,
+              width: 300,
+              position: "relative"
+
+            }} 
+            onPress={() => 
+            addOrderToFirbase()
+            }
+            >
+              <Text  style={{ color:"white", fontSize: 12}} >Process </Text>
+             <Text style={{ position: "absolute",  right: 20, color: "white",
+             fontSize: 9,
+             top: 17
+            }} > {total ? totalUSD : ""} </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </View>
+      </>
     );
   };
   return (
@@ -49,12 +107,13 @@ export default function ViewCart({ navigation }) {
       {total ? (
         <>
           <Modal
-          animationType="slide"
-          visible={modalVisible}
-          transparent={true}
-          onRequestClose={() => setModalVisible(false)}
+            animationType="slide"
+            visible={modalVisible}
+            transparent={true}
+            onRequestClose={() => setModalVisible(false)}
           >
-             {checkoutModalContent() } </Modal>
+            {checkoutModalContent()}{" "}
+          </Modal>
           <View
             style={{
               display: "flex",

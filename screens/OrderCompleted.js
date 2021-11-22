@@ -1,9 +1,32 @@
-import React from 'react'
-import { View, Text, SafeAreaView} from 'react-native'
-import {useSelector} from "react-redux"
-import LottieView from "lottie-react-native"
+import React, { useEffect, useRef } from "react";
+import { View, Text, SafeAreaView, Image } from "react-native";
+import { useSelector } from "react-redux";
+import lottie from "lottie-web";
 
 export default function OrderCompleted() {
+  const container = useRef(null);
+  const container2 = useRef(null);
+  useEffect(() => {
+    
+    lottie.loadAnimation({
+      container: container.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      animationData: require("../assets/animations/purple-tick.json")
+    });
+    
+    lottie.loadAnimation({
+      container: container2.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: true,
+      animationData: require("../assets/animations/cooking.json")
+    });
+
+
+
+  }, []);
 
   const { items, resturantName } = useSelector(
     (state) => state.cartReducer.selectedItems
@@ -17,15 +40,15 @@ export default function OrderCompleted() {
     style: "currency",
     currency: "USD",
   });
-    return (
-        <SafeAreaView  style={{flex:1, backgroundColor: "white"}} >
-            {/* green checkmark */}
-            <Text>your order at  {
-                resturantName
-                },
-            has been placed for {totalUSD}
-             </Text>
-             {/* cooking animation */}
-        </SafeAreaView>
-    )
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <Image ref={container} style={{width:100, alignSelf: "center"}} ></Image>
+
+      <Text>
+        your order at {resturantName}, has been placed for {totalUSD}
+      </Text>
+      <Image ref={container2} style={{width:"80%", alignSelf: "center"}} ></Image>
+      {/* cooking animation */}
+    </SafeAreaView>
+  );
 }
