@@ -16,15 +16,15 @@ import lottie from "lottie-web";
 export default function ViewCart({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const container12 = useRef(null);
 
-  const container6= useRef(null);
   useEffect(() => {
     lottie.loadAnimation({
-      container: container6.current,
+      container: container12 .current,
       renderer: "svg",
-      loop: false,
+      loop: true,
       autoplay: true,
-      animationData: require("../../assets/animations/paperplane.json"),
+      animationData: require("../../assets/animations/gameboy.json"),
     });
   }, []);
 
@@ -53,7 +53,7 @@ export default function ViewCart({ navigation }) {
       })
       .then(() => {
         setTimeout(() => {
-          // setLoading(false)
+          setLoading(false)
           navigation.navigate("OrderCompleted");
         }, 2500);
       });
@@ -117,7 +117,6 @@ export default function ViewCart({ navigation }) {
                   position: "relative",
                 }}
                 onPress={() => {
-
                   addOrderToFirbase();
                   setModalVisible(false);
                 }}
@@ -156,13 +155,12 @@ export default function ViewCart({ navigation }) {
           </Modal>
           <View
             style={{
-              display: "flex",
               flex: 1,
               alignItems: "center",
               justifyContent: "center",
               flexDirection: "row",
               position: "absolute",
-              bottom: -30,
+              bottom: 130,
               zIndex: 99,
             }}
           >
@@ -179,7 +177,6 @@ export default function ViewCart({ navigation }) {
                   backgroundColor: "#8a2be2",
                   flexDirection: "row",
                   justifyContent: "flex-end",
-                  alignItems: "center",
                   padding: 11,
                   marginLeft: "61%",
                   borderRadius: 30,
@@ -204,20 +201,18 @@ export default function ViewCart({ navigation }) {
           style={{
             backgroundColor: "black",
             position: "absolute",
+            opacity: 0.9,
             justifyContent: "center",
             alignItems: "center",
-            opacity: 0.6,
             height: "100%",
             width: "100%",
           }}
         >
           <Image
-            ref={container6}
-            style={{
-              height: "70%",
-              alignSelf: "center"
-            }}
-          />
+            ref={container12}
+            style={{ width: "80%", alignSelf: "center" }}
+          ></Image>
+          <Text style={{color: "white", backgroundColor:"black"}} >loading ...</Text>
         </View>
       ) : (
         <></>

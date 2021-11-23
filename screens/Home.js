@@ -4,7 +4,7 @@ import BottomsTabs from "../components/home/BottomsTabs";
 import Categories from "../components/home/Categories";
 import HeaderTabs from "../components/home/HeaderTabs";
 import ResturantItems from "../components/home/ResturantItem";
-import {Divider} from "react-native-elements"
+import { Divider } from "react-native-elements";
 import SearchBar from "../components/home/SearchBar";
 import config from "../config";
 
@@ -38,33 +38,30 @@ const localRestaurants = [
   },
 ];
 
-export default function Home({navigation}) {
+export default function Home({ navigation }) {
   const [resturantData, setResturantData] = useState(localRestaurants);
   const [city, setCity] = useState("bandhagen");
   const [activeTab, setActiveTab] = useState("Delivery");
-
 
   const getResturantFromYelp = () => {
     const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
     const apiOptions = {
       headers: {
-        Authorization: `Bearer ${config.REACT_APP_YELP_KEY}`,
+        // Authorization: `Bearer ${config.REACT_APP_YELP_KEY}`,
+        // 'origin': 'https://cors-anywhere.herokuapp.com/',
+        "X-Requested-With": "XMLHttpRequest"
       },
-      mode: "cors",
+      mode: "no-cors"
     };
 
     return fetch(yelpUrl, apiOptions)
       .then((res) => res.json())
-      .then((json) =>
-        setResturantData(
-          json.businesses
-        )
-      )
+      .then((json) => setResturantData(json.businesses))
       .catch((err) => console.log(err));
   };
   useEffect(() => {
     getResturantFromYelp();
-  }, [city,activeTab]);
+  }, [city, activeTab]);
 
   return (
     <SafeAreaView style={{ backgroundColor: "#eee", flex: 1 }}>
@@ -73,10 +70,13 @@ export default function Home({navigation}) {
         <SearchBar cityHandler={setCity} />
         <ScrollView showsVerticalScrollIndicator={false}>
           <Categories />
-          <ResturantItems resturantData={resturantData}  navigation={navigation} />
+          <ResturantItems
+            resturantData={resturantData}
+            navigation={navigation}
+          />
         </ScrollView>
         <Divider witdth={1} />
-        <BottomsTabs/>
+        <BottomsTabs />
       </View>
     </SafeAreaView>
   );

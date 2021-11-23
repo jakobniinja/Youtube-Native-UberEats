@@ -19,9 +19,9 @@ export default function SearchBar({cityHandler}) {
                   requestUrl={{
         useOnPlatform: 'all', 
         url:
-          'https://maps.googleapis.com/maps/api', // or any proxy server that hits https://maps.googleapis.com/maps/api
+          'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api', // or any proxy server that hits https://maps.googleapis.com/maps/api
         
-        mode:"cors"
+        mode:"no-cors"
       }}
             placeholder="Search"
            styles={{

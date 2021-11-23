@@ -57,7 +57,7 @@ export default function MenuItems({
             )}
             <FoodInfo food={food} />
             <FoodImage food={food} 
-            marginLeft={marginLeft ? margin: 0}
+            marginLeft={marginLeft ? marginLeft: 0}
             />
           </View>
           <Divider

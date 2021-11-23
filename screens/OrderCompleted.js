@@ -19,6 +19,7 @@ export default function OrderCompleted() {
   });
   const container = useRef(null);
   const container2 = useRef(null);
+  const container12 = useRef(null);
   useEffect(() => {
     lottie.loadAnimation({
       container: container.current,
@@ -35,6 +36,14 @@ export default function OrderCompleted() {
       autoplay: true,
       animationData: require("../assets/animations/cooking.json"),
     });
+        lottie.loadAnimation({
+      container: container12.current,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData: require("../assets/animations/gameboy.json"),
+    });
+
   }, []);
 
   const { items, resturantName } = useSelector(
@@ -78,7 +87,7 @@ export default function OrderCompleted() {
         ></Image>
 
         <ScrollView>
-          <MenuItems foods={lastOrder.items} hideCheckbox={true}></MenuItems>
+          <MenuItems foods={lastOrder.items} hideCheckbox={true} marginLeft={8} ></MenuItems>
           <Text style={{ fontSize: 20, fontWeight: "bold", padding: 12 }}>
             {resturantName}, total {totalUSD}
           </Text>
