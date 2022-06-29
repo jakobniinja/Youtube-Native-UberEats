@@ -1,10 +1,10 @@
  <h4 align="center" >
- Uber React Native Clone
+Create a Chess Game with ReactJS
 </h4>
 
- <h2 align = 'center'>About page</h2>
+ <h2 align = 'center'>Frontend Coding</h2>
 <p align="center">
-<img src="./assets/about.png" alt="React"  />
+<img src="./assets/images/bg-readme.png" alt="chess image"  />
 
 </p>
 
